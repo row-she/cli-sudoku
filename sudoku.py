@@ -33,7 +33,7 @@ def enterMenu():
                 if not currentLevel:
                     print("\nYour didn't select your level yet.")
                 else:
-                    print("\nYour current level is: " + currentLevel)
+                    print("\nYour current level is: " + currentLevel.upper())
                 while True:
                     try:
                         userLevel = str(raw_input("\nSelect level (easy/medium/hard): "))
@@ -55,7 +55,7 @@ def enterMenu():
                     print("Please enter \'easy\', \'medium\' or \'hard\'.")
             elif command.upper() == "R":
                 print("")
-                return False
+                return True
         except ValueError:
             pass
         except KeyError:
@@ -67,7 +67,7 @@ def greeting():
     print("\n******************************")
     print("*** WELCOME TO CLI SUDOKU! ***")
     print("******************************")
-    print("\nEnter 'menu' at any prompt to enter menu.\n")
+    print("\nType 'menu' at any prompt to enter menu.\n")
     print("Press 'ctrl-c' to quit at any time.")
 
 greeting()
@@ -101,7 +101,13 @@ def updateBoard(board, userInput):
             print("Wrong Answer! Game Over!")
             while True:
                 try:
-                    retry = raw_input("\nTry again? (y/n) ")
+                    retry = str(raw_input("\nTry again? (y/n) "))
+                    if retry == "menu":
+                        menuAction = enterMenu()
+                        if menuAction:
+                            newStage = getUserStage(currentLevel)
+                            print("Current Stage: " + currentLevel.upper() + "-" + str(newStage))
+                            getBoardData(currentLevel, newStage)
                     if retry == "y":
                         global currentBoard
                         greeting()
@@ -162,7 +168,15 @@ def runBoard(board):
     #get user row
     while True:
         try:
-            userRow = raw_input("Enter a row (A-F): ").upper()
+            userRow = str(raw_input("Enter a row (A-F): "))
+            if userRow == "menu":
+                menuAction = enterMenu()
+                if menuAction:
+                    newStage = getUserStage(currentLevel)
+                    print("Current Stage: " + currentLevel.upper() + "-" + str(newStage))
+                    getBoardData(currentLevel, newStage)
+            else:
+                userRow = userRow.upper()
             rowOptions = {
                 "A":1, "B": 2, "C": 3, "D": 4, "E": 5, "F":6
                 }
@@ -176,7 +190,15 @@ def runBoard(board):
     #get user column
     while True:
         try:
-            userCol = int(raw_input("Enter a column (1-6): "))
+            userCol = str(raw_input("Enter a column (1-6): "))
+            if userCol == "menu":
+                menuAction = enterMenu()
+                if menuAction:
+                    newStage = getUserStage(currentLevel)
+                    print("Current Stage: " + currentLevel.upper() + "-" + str(newStage))
+                    getBoardData(currentLevel, newStage)
+            else:
+                userCol = int(userCol)
             if userCol > 0 and userCol < 7:
                 userInput.append(userCol)
                 break
@@ -186,14 +208,28 @@ def runBoard(board):
     #get user value
     while True:
         try:
-            userVal = int(raw_input("Enter a value (1-6): "))
+            userVal = str(raw_input("Enter a value (1-6): "))
+            if userVal == "menu":
+                menuAction = enterMenu()
+                if menuAction:
+                    newStage = getUserStage(currentLevel)
+                    print("Current Stage: " + currentLevel.upper() + "-" + str(newStage))
+                    getBoardData(currentLevel, newStage)
+            else:
+                userVal = int(userVal)
             if userVal > 0 and userVal < 7:
                 userInput.append(userVal)
                 print("\nYou've entered the value " + str(userVal) + " for " + \
                       str(userInput[0]) + "-" + str(userInput[2]) + ".")
                 while True:
                     try:
-                        submit = raw_input("Do you want to submit this? (y/n) ")
+                        submit = str(raw_input("Do you want to submit this? (y/n) "))
+                        if submit == "menu":
+                            menuAction = enterMenu()
+                            if menuAction:
+                                newStage = getUserStage(currentLevel)
+                                print("Current Stage: " + currentLevel.upper() + "-" + str(newStage))
+                                getBoardData(currentLevel, newStage)
                         if submit == "y":
                             print("")
                             updateBoard(currentBoard, userInput)

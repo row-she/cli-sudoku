@@ -1,5 +1,14 @@
 import json
 import sys
+import signal,sys
+
+def catch_ctrl_C(sig,frame):
+    print("\n\n*************************")
+    print("***** OK. BYE THEN. *****")
+    print("*************************\n")
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, catch_ctrl_C)
 
 solution = []
 currentBoard = []

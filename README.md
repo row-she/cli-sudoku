@@ -1,4 +1,4 @@
-#COMMAND LINE INTERFACE SUDOKU
+# COMMAND LINE INTERFACE SUDOKU
 
 - you must have python installed to play this
 - navigate to folder

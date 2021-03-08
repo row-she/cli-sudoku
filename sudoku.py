@@ -4,7 +4,7 @@ import signal,sys
 
 def exitGame():
     print("\n\n*************************")
-    print("***** OK. BYE THEN. *****")
+    print("***** OK, BYE THEN. *****")
     print("*************************\n")
     sys.exit(0)
 
@@ -20,6 +20,7 @@ currentLevel = ""
 userData = {}
 
 def enterMenu():
+    global currentLevel
     print("\n****************")
     print("***** MENU *****")
     print("****************\n")
@@ -45,7 +46,6 @@ def enterMenu():
                             "hard": 3
                             }
                         if levelOptions[userLevel]:
-                            global currentLevel
                             currentLevel = userLevel
                             return True
                     except ValueError:
@@ -237,7 +237,9 @@ def runBoard(board):
                             if boardIsComplete() == False:
                                 runBoard(currentBoard)
                             else:
-                                print("Congratulations! You won!")
+                                print("\n*************************************")
+                                print("***** CONGRATULATIONS! YOU WON! *****")
+                                print("*************************************\n")
                                 global currentStage
                                 currentStage = currentStage+1
                                 print("Next Stage: " + currentLevel.upper() + "-" + str(currentStage))
@@ -263,6 +265,7 @@ def getBoardData(level, stage):
     runBoard(currentBoard)
 
 def selectLevel():
+    global currentLevel
     while True:
         try:
             userLevel = str(raw_input("\nSelect level (easy/medium/hard): "))
@@ -278,7 +281,6 @@ def selectLevel():
                 "hard": 3
                 }
             if levelOptions[userLevel]:
-                global currentLevel
                 currentLevel = userLevel
                 stage = getUserStage(userLevel)
                 print("Current Stage: " + currentLevel.upper() + "-" + str(stage))

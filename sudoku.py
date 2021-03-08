@@ -134,35 +134,36 @@ def boardIsComplete():
     return True
 
 def runBoard(board):
-    #print board
+    #draw board
     print("\nHere's your board:\n")
     for rowNum, row in enumerate(solution):
-        rowDisp = "A"
         if rowNum == 0:
-            print("   1   2   3     4   5   6")
+            rowDisp = "A"
+            print("      1     2     3       4     5     6")
         elif rowNum == 1:
             rowDisp = "B"
         elif rowNum == 2:
             rowDisp = "C"
-            print("  -------------------------")
+            print("   + --- + --- + --- + + --- + --- + --- +")
         elif rowNum == 3:
             rowDisp = "D"
         elif rowNum == 4:
             rowDisp = "E"
-            print("  -------------------------")
+            print("   + --- + --- + --- + + --- + --- + --- +")
         elif rowNum == 5:
             rowDisp = "F"
         rowArray = []
         for colNum, col in enumerate(row):
             if board[rowNum][colNum]:
-                rowArray.append("[" + str(col) + "]")
+                rowArray.append("  " + str(col) + "  |")
             else:
-                rowArray.append("[ ]")
+                rowArray.append("     |")
             if colNum==2:
-                rowArray.append("|")
-        joinedRow = " ".join(rowArray)
-        print(rowDisp + " " + joinedRow)
-    print("")
+                rowArray.append(" |")
+        joinedRow = "".join(rowArray)
+        print("   + --- + --- + --- + + --- + --- + --- +")
+        print(rowDisp + "  |" + joinedRow)
+    print("   + --- + --- + --- + + --- + --- + --- +\n")
     #get user input
     userInput = []
     #get user row

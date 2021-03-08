@@ -2,11 +2,14 @@ import json
 import sys
 import signal,sys
 
-def catch_ctrl_C(sig,frame):
+def exitGame():
     print("\n\n*************************")
     print("***** OK. BYE THEN. *****")
     print("*************************\n")
     sys.exit(0)
+
+def catch_ctrl_C(sig,frame):
+    exitGame()
 
 signal.signal(signal.SIGINT, catch_ctrl_C)
 
@@ -16,10 +19,56 @@ currentStage = 1
 currentLevel = ""
 userData = {}
 
+def enterMenu():
+    print("\n****************")
+    print("***** MENU *****")
+    print("****************\n")
+    print("What do you want to do?")
+    while True:
+        try:
+            command = raw_input("\nQuit game (Q), Change Level (L), Resume Game (R): ")
+            if command.upper() == "Q":
+                exitGame()
+            elif command.upper() == "L":
+                if not currentLevel:
+                    print("\nYour didn't select your level yet.")
+                else:
+                    print("\nYour current level is: " + currentLevel)
+                while True:
+                    try:
+                        userLevel = str(raw_input("\nSelect level (easy/medium/hard): "))
+                        if userLevel == "menu":
+                            enterMenu()
+                        levelOptions = {
+                            "easy": 1,
+                            "medium": 2,
+                            "hard": 3
+                            }
+                        if levelOptions[userLevel]:
+                            global currentLevel
+                            currentLevel = userLevel
+                            return True
+                    except ValueError:
+                        pass
+                    except KeyError:
+                        pass
+                    print("Please enter \'easy\', \'medium\' or \'hard\'.")
+            elif command.upper() == "R":
+                print("")
+                return False
+        except ValueError:
+            pass
+        except KeyError:
+            pass
+        print("Please enter 'Q', 'L' or 'R'")
+
+
 def greeting():
     print("\n******************************")
     print("*** WELCOME TO CLI SUDOKU! ***")
     print("******************************")
+    print("\nEnter 'menu' at any prompt to enter menu.\n")
+    print("Press 'ctrl-c' to quit at any time.")
 
 greeting()
 
@@ -175,13 +224,18 @@ def getBoardData(level, stage):
     data = json.loads(open(filepath, "r").read())
     solution = data["board"]
     currentBoard = data["show"]
-
     runBoard(currentBoard)
 
 def selectLevel():
     while True:
         try:
             userLevel = str(raw_input("\nSelect level (easy/medium/hard): "))
+            if userLevel == "menu":
+                menuAction = enterMenu()
+                if menuAction:
+                    newStage = getUserStage(currentLevel)
+                    print("Current Stage: " + currentLevel.upper() + "-" + str(newStage))
+                    getBoardData(currentLevel, newStage)
             levelOptions = {
                 "easy": 1,
                 "medium": 2,
